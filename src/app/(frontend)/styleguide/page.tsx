@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Button, Card, Chip, Container, Eyebrow, Section, SectionHeading } from '@/components/ui'
 
 export const metadata: Metadata = {
   title: 'Style Guide · AIxGrowth',
@@ -20,28 +21,27 @@ export default function StyleguidePage() {
   return (
     <div className="min-h-screen pb-24">
       {/* Header */}
-      <header className="border-ink-thick border-b bg-ink py-10 text-paper">
-        <div className="wrap">
-          <p className="font-mono text-xs uppercase tracking-[0.15em] text-yellow">
-            // Internal · Design System
-          </p>
-          <h1 className="mt-3 font-display text-5xl uppercase tracking-tight md:text-7xl">
+      <header className="border-ink-thick border-b bg-ink py-12 text-paper">
+        <Container>
+          <Eyebrow>// Internal · Design System</Eyebrow>
+          <h1 className="mt-4 font-display text-5xl uppercase tracking-tight md:text-7xl">
             Style Guide
           </h1>
           <p className="mt-4 max-w-xl text-paper/80">
             Tokens, primitives, and section utilities. Source of truth for the AIxGrowth marketing
             site.
           </p>
-        </div>
+        </Container>
       </header>
 
-      {/* Colors */}
-      <Section title="Colors" eyebrow="// 01 · Tokens">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      {/* 01 Colors */}
+      <Section tone="default">
+        <SectionHeading eyebrow="// 01 · Tokens" title="Colors" />
+        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
           {colors.map((c) => (
             <div
               key={c.name}
-              className={`border-ink shadow-brut ${c.cls} ${c.textCls ?? 'text-ink'} p-5`}
+              className={`border-ink shadow-brut p-5 ${c.cls} ${c.textCls ?? 'text-ink'}`}
             >
               <div className="font-display text-lg uppercase">{c.name}</div>
               <div className="mt-2 font-mono text-xs">{c.hex}</div>
@@ -51,9 +51,10 @@ export default function StyleguidePage() {
         </div>
       </Section>
 
-      {/* Typography */}
-      <Section title="Typography" eyebrow="// 02 · Type">
-        <div className="space-y-8">
+      {/* 02 Typography */}
+      <Section tone="paper">
+        <SectionHeading eyebrow="// 02 · Type" title="Typography" />
+        <div className="mt-10 space-y-8">
           <Row label="font-display · Archivo Black">
             <p className="font-display text-6xl uppercase leading-[0.95] tracking-tight">
               Headlines That Compound
@@ -61,8 +62,8 @@ export default function StyleguidePage() {
           </Row>
           <Row label="font-sans · Space Grotesk">
             <p className="text-lg leading-relaxed">
-              Body copy uses Space Grotesk at multiple weights. Most paragraphs sit at base or
-              lg with comfortable line-height for readability.
+              Body copy uses Space Grotesk at multiple weights. Most paragraphs sit at base or lg
+              with comfortable line-height for readability.
             </p>
           </Row>
           <Row label="font-mono · JetBrains Mono">
@@ -87,9 +88,10 @@ export default function StyleguidePage() {
         </div>
       </Section>
 
-      {/* Shadows + borders */}
-      <Section title="Shadows & Borders" eyebrow="// 03 · Surfaces">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+      {/* 03 Shadows + borders */}
+      <Section tone="default">
+        <SectionHeading eyebrow="// 03 · Surfaces" title="Shadows & Borders" />
+        <div className="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">
           <ShadowSwatch label="shadow-brut-sm" cls="shadow-brut-sm" />
           <ShadowSwatch label="shadow-brut" cls="shadow-brut" />
           <ShadowSwatch label="shadow-brut-lg" cls="shadow-brut-lg" />
@@ -107,23 +109,28 @@ export default function StyleguidePage() {
         </div>
       </Section>
 
-      {/* Buttons */}
-      <Section title="Buttons" eyebrow="// 04 · Primitives">
-        <div className="flex flex-wrap gap-4">
-          <Btn>Default</Btn>
-          <Btn variant="yellow">Yellow</Btn>
-          <Btn variant="red">Red</Btn>
-          <Btn variant="blue">Blue</Btn>
-          <Btn variant="ink">Ink</Btn>
+      {/* 04 Buttons */}
+      <Section tone="paper">
+        <SectionHeading eyebrow="// 04 · Primitives" title="Buttons" />
+        <div className="mt-10 flex flex-wrap gap-4">
+          <Button>Default →</Button>
+          <Button variant="yellow">Yellow →</Button>
+          <Button variant="red">Red →</Button>
+          <Button variant="blue">Blue →</Button>
+          <Button variant="ink">Ink →</Button>
+          <Button href="#" variant="yellow">
+            As Link →
+          </Button>
         </div>
-        <p className="mt-4 font-mono text-xs uppercase tracking-wider opacity-60">
-          // Hover lifts -2,-2 · Active presses 3,3
+        <p className="mt-5 font-mono text-xs uppercase tracking-wider opacity-60">
+          // Renders as &lt;a&gt; when href is provided, else &lt;button&gt;
         </p>
       </Section>
 
-      {/* Eyebrows */}
-      <Section title="Eyebrows" eyebrow="// 05 · Primitives">
-        <div className="flex flex-wrap gap-4">
+      {/* 05 Eyebrows */}
+      <Section tone="default">
+        <SectionHeading eyebrow="// 05 · Primitives" title="Eyebrows" />
+        <div className="mt-10 flex flex-wrap gap-4">
           <Eyebrow>// THE PROBLEM</Eyebrow>
           <Eyebrow variant="red">// THE PROBLEM</Eyebrow>
           <Eyebrow variant="paper">// PRICING</Eyebrow>
@@ -131,9 +138,10 @@ export default function StyleguidePage() {
         </div>
       </Section>
 
-      {/* Cards */}
-      <Section title="Cards" eyebrow="// 06 · Primitives">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+      {/* 06 Cards */}
+      <Section tone="paper">
+        <SectionHeading eyebrow="// 06 · Primitives" title="Cards" />
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
           <Card bg="paper">
             <p className="font-display text-2xl uppercase">Paper</p>
             <p className="mt-2 text-sm opacity-80">Default surface for most cards.</p>
@@ -142,7 +150,7 @@ export default function StyleguidePage() {
             <p className="font-display text-2xl uppercase">Yellow</p>
             <p className="mt-2 text-sm opacity-80">Highlight / featured surface.</p>
           </Card>
-          <Card bg="blue" textCls="text-paper">
+          <Card bg="blue">
             <p className="font-display text-2xl uppercase">Blue</p>
             <p className="mt-2 text-sm opacity-90">Inverted accent.</p>
           </Card>
@@ -150,40 +158,51 @@ export default function StyleguidePage() {
             <p className="font-display text-2xl uppercase">Pink</p>
             <p className="mt-2 text-sm opacity-80">Soft accent.</p>
           </Card>
-          <Card bg="ink" textCls="text-paper">
+          <Card bg="ink">
             <p className="font-display text-2xl uppercase text-yellow">Ink</p>
             <p className="mt-2 text-sm opacity-80">Dark surface for contrast bands.</p>
+          </Card>
+          <Card bg="paper" shadow="xl">
+            <p className="font-display text-2xl uppercase">XL Shadow</p>
+            <p className="mt-2 text-sm opacity-80">Featured / hero card shadow.</p>
           </Card>
         </div>
       </Section>
 
-      {/* Chips */}
-      <Section title="Chips" eyebrow="// 07 · Primitives">
-        <div className="flex flex-wrap gap-3">
-          {[
-            'B2B SaaS',
-            'Edtech',
-            'E-commerce',
-            'HR Tech',
-            'Developer Tools',
-            'Fintech',
-            'Healthtech',
-          ].map((c, i) => (
-            <span
-              key={c}
-              className={`border-ink shadow-brut-sm bg-paper px-4 py-2 text-sm font-semibold ${
-                i % 2 === 1 ? 'bg-yellow -rotate-1' : i % 3 === 0 ? 'bg-pink rotate-1' : ''
-              }`}
-            >
-              {c}
-            </span>
-          ))}
+      {/* 07 Chips */}
+      <Section tone="default">
+        <SectionHeading eyebrow="// 07 · Primitives" title="Chips" />
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Chip rotate={-1}>B2B SaaS</Chip>
+          <Chip bg="yellow" rotate={1}>
+            Edtech
+          </Chip>
+          <Chip bg="pink" rotate={-2}>
+            E-commerce
+          </Chip>
+          <Chip rotate={1}>HR Tech</Chip>
+          <Chip bg="blue" rotate={-1}>
+            Developer Tools
+          </Chip>
+          <Chip bg="yellow" rotate={2}>
+            Fintech
+          </Chip>
         </div>
       </Section>
 
-      {/* Container demo */}
-      <Section title="Container · .wrap" eyebrow="// 08 · Layout">
-        <div className="border-ink bg-paper p-4">
+      {/* 08 Section heading */}
+      <Section tone="paper">
+        <SectionHeading
+          eyebrow="// 08 · Composition"
+          title="Section Heading"
+          sub="Eyebrow + display headline + optional sub. This component is reused across every section of the landing page."
+        />
+      </Section>
+
+      {/* 09 Container */}
+      <Section tone="default">
+        <SectionHeading eyebrow="// 09 · Layout" title="Container · .wrap" />
+        <div className="mt-8 border-ink bg-paper p-4">
           <div className="bg-yellow border-ink-thick p-4">
             <p className="font-mono text-xs uppercase">max-width 1360px · px 28px</p>
           </div>
@@ -193,29 +212,7 @@ export default function StyleguidePage() {
   )
 }
 
-/* -- Local helpers (exist only in this file, will be promoted to /components/ui in Phase B) -- */
-
-function Section({
-  title,
-  eyebrow,
-  children,
-}: {
-  title: string
-  eyebrow: string
-  children: React.ReactNode
-}) {
-  return (
-    <section className="border-ink-thick border-t py-14">
-      <div className="wrap">
-        <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] bg-ink text-yellow inline-block px-3 py-1.5 mb-5">
-          {eyebrow}
-        </p>
-        <h2 className="font-display text-3xl uppercase tracking-tight md:text-4xl">{title}</h2>
-        <div className="mt-8">{children}</div>
-      </div>
-    </section>
-  )
-}
+/* Local helpers */
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -231,72 +228,5 @@ function ShadowSwatch({ label, cls }: { label: string; cls: string }) {
     <div className={`border-ink bg-paper p-6 ${cls}`}>
       <p className="font-mono text-xs uppercase">{label}</p>
     </div>
-  )
-}
-
-function Btn({
-  children,
-  variant = 'default',
-}: {
-  children: React.ReactNode
-  variant?: 'default' | 'yellow' | 'red' | 'blue' | 'ink'
-}) {
-  const map = {
-    default: 'bg-paper text-ink',
-    yellow: 'bg-yellow text-ink',
-    red: 'bg-red text-paper',
-    blue: 'bg-blue text-paper',
-    ink: 'bg-ink text-paper',
-  }
-  return (
-    <button
-      type="button"
-      className={`border-ink shadow-brut brut-hover inline-flex items-center gap-2 px-6 py-3 font-semibold ${map[variant]}`}
-    >
-      {children} →
-    </button>
-  )
-}
-
-function Eyebrow({
-  children,
-  variant = 'ink',
-}: {
-  children: React.ReactNode
-  variant?: 'ink' | 'red' | 'paper' | 'yellow'
-}) {
-  const map = {
-    ink: 'bg-ink text-yellow',
-    red: 'bg-red text-paper',
-    paper: 'bg-paper text-red border-ink border',
-    yellow: 'bg-yellow text-ink',
-  }
-  return (
-    <span
-      className={`inline-block px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.12em] ${map[variant]}`}
-    >
-      {children}
-    </span>
-  )
-}
-
-function Card({
-  children,
-  bg = 'paper',
-  textCls = 'text-ink',
-}: {
-  children: React.ReactNode
-  bg?: 'paper' | 'yellow' | 'blue' | 'pink' | 'ink'
-  textCls?: string
-}) {
-  const map = {
-    paper: 'bg-paper',
-    yellow: 'bg-yellow',
-    blue: 'bg-blue',
-    pink: 'bg-pink',
-    ink: 'bg-ink',
-  }
-  return (
-    <div className={`border-ink-thick shadow-brut-lg p-7 ${map[bg]} ${textCls}`}>{children}</div>
   )
 }
