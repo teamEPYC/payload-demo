@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Colors */
+  --color-bg: #f5f1e8;
+  --color-ink: #0a0a0a;
+  --color-paper: #ffffff;
+  --color-yellow: #ffe600;
+  --color-red: #ff3b30;
+  --color-blue: #2b44ff;
+  --color-green: #00c853;
+  --color-pink: #ff7eb6;
+
+  /* Fonts (CSS vars set by next/font in layout) */
+  --font-display: var(--font-archivo-black), system-ui, sans-serif;
+  --font-sans: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* Brutalist hard shadows (no blur, ink offset) */
+  --shadow-brut-sm: 4px 4px 0 0 var(--color-ink);
+  --shadow-brut: 6px 6px 0 0 var(--color-ink);
+  --shadow-brut-lg: 10px 10px 0 0 var(--color-ink);
+  --shadow-brut-xl: 14px 14px 0 0 var(--color-ink);
+
+  /* Layout */
+  --container-wrap: 1360px;
+}
+
+/* Base resets — match the source's reset behavior */
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* Utility helpers used across landing sections */
+@utility wrap {
+  max-width: var(--container-wrap);
+  margin-inline: auto;
+  padding-inline: 28px;
+}
+
+@utility border-ink {
+  border: 3px solid var(--color-ink);
+}
+
+@utility border-ink-thick {
+  border: 4px solid var(--color-ink);
+}
+
+/* Brut hover lift (used on buttons / interactive cards) */
+@utility brut-hover {
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 0 var(--color-ink);
+  }
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 0 var(--color-ink);
+  }
+}

@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AIxGrowth — Neo-Brutalism</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F1E8;
+    --ink:#0A0A0A;
+    --paper:#FFFFFF;
+    --yellow:#FFE600;
+    --red:#FF3B30;
+    --blue:#2B44FF;
+    --green:#00C853;
+    --pink:#FF7EB6;
+    --shadow: 6px 6px 0 0 var(--ink);
+    --shadow-lg: 10px 10px 0 0 var(--ink);
+    --shadow-xl: 14px 14px 0 0 var(--ink);
+    --border: 3px solid var(--ink);
+    --border-thick: 4px solid var(--ink);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .display{font-family:'Archivo Black',sans-serif;letter-spacing:-0.02em}
+  .wrap{max-width:1360px;margin:0 auto;padding:0 28px}
+
+  /* Marquee ticker */
+  .ticker{background:var(--ink);color:var(--yellow);overflow:hidden;border-bottom:var(--border-thick)}
+  .ticker-track{display:flex;gap:56px;padding:10px 0;white-space:nowrap;animation:tick 40s linear infinite;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase}
+  .ticker-track span::before{content:"★";margin-right:12px;color:var(--red)}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* Nav */
+  .nav{display:flex;justify-content:space-between;align-items:center;padding:22px 28px;border-bottom:var(--border-thick);background:var(--bg);position:sticky;top:0;z-index:50}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:-0.02em}
+  .logo-mark{width:38px;height:38px;background:var(--yellow);border:var(--border);display:grid;place-items:center;box-shadow:4px 4px 0 0 var(--ink);font-family:'Archivo Black';font-size:20px;transform:rotate(-4deg)}
+  .nav-links{display:flex;gap:28px;font-weight:500;font-size:15px}
+  .nav-links a{padding:6px 2px;border-bottom:2px solid transparent}
+  .nav-links a:hover{border-bottom-color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border:var(--border);background:var(--paper);font-weight:600;font-size:15px;box-shadow:var(--shadow);transition:transform .1s,box-shadow .1s;cursor:pointer;font-family:inherit}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 0 var(--ink)}
+  .btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 0 var(--ink)}
+  .btn-yellow{background:var(--yellow)}
+  .btn-red{background:var(--red);color:var(--paper)}
+  .btn-blue{background:var(--blue);color:var(--paper)}
+  .btn-ink{background:var(--ink);color:var(--paper)}
+
+  /* HERO */
+  .hero{padding:60px 0 80px;position:relative;overflow:hidden}
+  .hero-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:48px;align-items:start}
+  .hero-tag{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border:var(--border);box-shadow:4px 4px 0 0 var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:28px}
+  .hero-tag .dot{width:10px;height:10px;background:var(--green);border:1.5px solid var(--ink);border-radius:50%}
+  .hero h1{font-family:'Archivo Black';font-size:clamp(44px,6.2vw,86px);line-height:0.95;letter-spacing:-0.035em;text-transform:uppercase}
+  .hero h1 .hl{background:var(--yellow);padding:2px 14px;display:inline-block;border:var(--border);box-shadow:var(--shadow);margin:6px 0}
+  .hero h1 .hl-red{background:var(--red);color:var(--paper);padding:2px 14px;display:inline-block;border:var(--border);box-shadow:var(--shadow);margin:6px 0;transform:rotate(-1.5deg)}
+  .hero-sub{margin-top:28px;font-size:19px;line-height:1.5;max-width:560px;color:#1a1a1a}
+  .hero-ctas{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap}
+  .hero-note{margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#555;text-transform:uppercase;letter-spacing:0.05em}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+  .stat{background:var(--paper);border:var(--border);padding:22px;box-shadow:var(--shadow);position:relative}
+  .stat:nth-child(1){background:var(--yellow)}
+  .stat:nth-child(2){background:var(--paper);transform:translateY(-8px)}
+  .stat:nth-child(3){background:var(--blue);color:var(--paper)}
+  .stat .num{font-family:'Archivo Black';font-size:44px;line-height:1;letter-spacing:-0.03em}
+  .stat .lbl{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600}
+
+  /* Hero side card (visual) */
+  .hero-visual{position:relative;padding-top:18px}
+  .vcard{background:var(--paper);border:var(--border-thick);box-shadow:var(--shadow-xl);padding:22px;position:relative}
+  .vcard-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:2px dashed var(--ink)}
+  .vcard-head h4{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.1em}
+  .dots{display:flex;gap:6px}
+  .dots i{width:10px;height:10px;border:1.5px solid var(--ink);border-radius:50%}
+  .dots i:nth-child(1){background:var(--red)}
+  .dots i:nth-child(2){background:var(--yellow)}
+  .dots i:nth-child(3){background:var(--green)}
+  .bars{margin-top:18px;display:flex;align-items:flex-end;gap:10px;height:160px}
+  .bar{flex:1;border:var(--border);background:var(--paper);position:relative;overflow:hidden}
+  .bar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,0,0,.08) 6px 7px)}
+  .bar.b1{height:30%;background:var(--pink)}
+  .bar.b2{height:50%;background:var(--yellow)}
+  .bar.b3{height:72%;background:var(--blue)}
+  .bar.b4{height:88%;background:var(--red)}
+  .bar.b5{height:100%;background:var(--green)}
+  .vcard-legend{margin-top:14px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:#555}
+  .vcard-foot{margin-top:18px;padding:12px;background:var(--ink);color:var(--yellow);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;display:flex;justify-content:space-between}
+  .float-badge{position:absolute;top:-22px;right:-22px;width:110px;height:110px;background:var(--red);color:var(--paper);border:var(--border-thick);border-radius:50%;display:grid;place-items:center;font-family:'Archivo Black';font-size:14px;text-align:center;line-height:1.1;transform:rotate(12deg);box-shadow:var(--shadow)}
+  .float-tape{position:absolute;bottom:-18px;left:-18px;padding:8px 16px;background:var(--yellow);border:var(--border);font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;text-transform:uppercase;transform:rotate(-4deg);box-shadow:4px 4px 0 0 var(--ink)}
+
+  /* Section heading */
+  .section{padding:90px 0;border-top:var(--border-thick)}
+  .eyebrow{display:inline-block;padding:6px 12px;background:var(--ink);color:var(--yellow);font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;font-weight:700;margin-bottom:22px}
+  h2.sec{font-family:'Archivo Black';font-size:clamp(36px,4.5vw,60px);line-height:0.98;letter-spacing:-0.03em;text-transform:uppercase;max-width:900px}
+  .sec-sub{margin-top:22px;font-size:18px;max-width:720px;line-height:1.5;color:#222}
+
+  /* Logos strip */
+  .logos{background:var(--ink);color:var(--paper);padding:42px 0;border-top:var(--border-thick);border-bottom:var(--border-thick)}
+  .logos-title{text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.15em;color:var(--yellow);margin-bottom:28px}
+  .logos-row{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;align-items:center;font-family:'Archivo Black';font-size:20px;opacity:.9}
+  .logos-row span{padding:8px 14px;border:2px solid rgba(255,255,255,.2)}
+
+  /* Problem */
+  .problem{background:var(--ink);color:var(--paper)}
+  .problem .eyebrow{background:var(--red);color:var(--paper)}
+  .problem h2.sec{color:var(--paper)}
+  .problem-grid{margin-top:52px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px}
+  .p-copy p{font-size:17px;line-height:1.6;margin-bottom:18px;color:#d8d8d8}
+  .real-prob{background:var(--yellow);color:var(--ink);border:var(--border);padding:24px;box-shadow:8px 8px 0 0 var(--red)}
+  .real-prob h4{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:10px}
+  .real-prob p{font-family:'Archivo Black';font-size:22px;line-height:1.2;letter-spacing:-0.02em;text-transform:uppercase}
+
+  /* Difference cards */
+  .diff-grid{margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .diff{background:var(--paper);border:var(--border-thick);box-shadow:var(--shadow-lg);padding:28px;position:relative;transition:transform .15s}
+  .diff:hover{transform:translate(-4px,-4px);box-shadow:14px 14px 0 0 var(--ink)}
+  .diff:nth-child(1){background:var(--yellow)}
+  .diff:nth-child(2){background:var(--pink)}
+  .diff:nth-child(3){background:var(--blue);color:var(--paper)}
+  .diff .icon{width:56px;height:56px;border:var(--border);background:var(--paper);color:var(--ink);display:grid;place-items:center;font-family:'Archivo Black';font-size:24px;margin-bottom:22px;box-shadow:4px 4px 0 0 var(--ink)}
+  .diff h3{font-family:'Archivo Black';font-size:24px;line-height:1.1;letter-spacing:-0.02em;margin-bottom:14px;text-transform:uppercase}
+  .diff p{font-size:15px;line-height:1.5}
+
+  /* Services / Pillars */
+  .pillars{background:var(--paper)}
+  .pillar-tabs{margin-top:40px;display:flex;gap:0;border:var(--border-thick);background:var(--bg)}
+  .ptab{flex:1;padding:18px 20px;text-align:left;background:var(--bg);border-right:var(--border);cursor:pointer;font-family:'Archivo Black';font-size:20px;letter-spacing:-0.02em;text-transform:uppercase;transition:background .1s}
+  .ptab:last-child{border-right:none}
+  .ptab.active{background:var(--ink);color:var(--yellow)}
+  .ptab .n{font-family:'JetBrains Mono',monospace;font-size:12px;display:block;margin-bottom:6px;opacity:.7}
+  .pillar-body{display:none;grid-template-columns:.9fr 1.1fr;gap:40px;padding:40px;border:var(--border-thick);border-top:none;background:var(--paper)}
+  .pillar-body.active{display:grid}
+  .pillar-lead h3{font-family:'Archivo Black';font-size:40px;line-height:1;letter-spacing:-0.03em;text-transform:uppercase;margin-bottom:16px}
+  .pillar-lead p{font-size:17px;line-height:1.5;margin-bottom:14px;color:#222}
+  .pillar-lead .hl-line{display:inline-block;padding:4px 10px;background:var(--yellow);border:2px solid var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase}
+  .services{display:grid;grid-template-columns:1fr;gap:0;border:var(--border)}
+  .srv{padding:14px 18px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:15px;background:var(--paper);transition:background .1s}
+  .srv:last-child{border-bottom:none}
+  .srv:hover{background:var(--yellow)}
+  .srv .arr{font-family:'JetBrains Mono',monospace;font-size:14px}
+
+  /* Process */
+  .process{background:var(--yellow);border-top:var(--border-thick);border-bottom:var(--border-thick)}
+  .steps{margin-top:52px;display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:var(--border-thick);background:var(--ink)}
+  .step{background:var(--paper);padding:24px;border-right:var(--border);position:relative;min-height:260px}
+  .step:last-child{border-right:none}
+  .step .num{font-family:'Archivo Black';font-size:64px;line-height:1;color:var(--red);letter-spacing:-0.04em}
+  .step h4{margin-top:14px;font-family:'Archivo Black';font-size:18px;text-transform:uppercase;letter-spacing:-0.01em;line-height:1.1}
+  .step p{margin-top:10px;font-size:13px;line-height:1.5;color:#333}
+  .step:nth-child(2){background:var(--bg)}
+  .step:nth-child(4){background:var(--bg)}
+
+  /* Compare table */
+  .compare{background:var(--paper)}
+  .cmp-table{margin-top:48px;border:var(--border-thick);background:var(--paper);overflow:hidden}
+  .cmp-row{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;border-bottom:var(--border)}
+  .cmp-row:last-child{border-bottom:none}
+  .cmp-head{background:var(--ink);color:var(--paper)}
+  .cmp-head .cell{font-family:'Archivo Black';font-size:16px;text-transform:uppercase;letter-spacing:-0.01em}
+  .cmp-head .us{background:var(--yellow);color:var(--ink)}
+  .cell{padding:18px 20px;border-right:var(--border);font-size:15px;line-height:1.4}
+  .cell:last-child{border-right:none}
+  .cell.lbl{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;background:var(--bg)}
+  .cell.us{background:#FFFBDB;font-weight:600}
+
+  /* Numbers block */
+  .nums{background:var(--red);color:var(--paper)}
+  .nums h2.sec{color:var(--paper)}
+  .nums .eyebrow{background:var(--paper);color:var(--red)}
+  .nums-grid{margin-top:52px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .nbox{background:var(--paper);color:var(--ink);border:var(--border-thick);padding:28px;box-shadow:10px 10px 0 0 var(--ink)}
+  .nbox .n{font-family:'Archivo Black';font-size:56px;line-height:1;letter-spacing:-0.03em}
+  .nbox .t{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#333}
+
+  /* ICP/Industries */
+  .icp{background:var(--bg)}
+  .icp-grid{margin-top:48px;display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:start}
+  .icp p{font-size:18px;line-height:1.55;margin-bottom:14px;color:#222}
+  .chips{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+  .chip{padding:10px 16px;background:var(--paper);border:var(--border);font-weight:600;font-size:14px;box-shadow:4px 4px 0 0 var(--ink);transform:rotate(-1deg)}
+  .chip:nth-child(2n){background:var(--yellow);transform:rotate(1deg)}
+  .chip:nth-child(3n){background:var(--pink);transform:rotate(-2deg)}
+  .chip:nth-child(5n){background:var(--blue);color:var(--paper)}
+
+  /* Pricing */
+  .pricing{background:var(--ink);color:var(--paper)}
+  .pricing h2.sec{color:var(--paper)}
+  .pricing .eyebrow{background:var(--yellow);color:var(--ink)}
+  .price-grid{margin-top:52px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .tier{background:var(--paper);color:var(--ink);border:var(--border-thick);padding:30px;box-shadow:10px 10px 0 0 var(--yellow);position:relative}
+  .tier.pop{background:var(--yellow);box-shadow:10px 10px 0 0 var(--red);transform:translateY(-12px)}
+  .tier .ribbon{position:absolute;top:-14px;right:20px;background:var(--red);color:var(--paper);padding:6px 12px;border:var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;box-shadow:3px 3px 0 0 var(--ink)}
+  .tier h4{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#555}
+  .tier .sub{margin-top:4px;font-weight:500;font-size:14px;color:#333;min-height:42px}
+  .tier .price{margin-top:20px;font-family:'Archivo Black';font-size:52px;letter-spacing:-0.03em;line-height:1}
+  .tier .price span{font-family:'JetBrains Mono',monospace;font-size:14px;color:#555;font-weight:500}
+  .tier ul{margin-top:22px;list-style:none;padding:0;border-top:2px solid var(--ink)}
+  .tier li{padding:12px 0;border-bottom:1.5px dashed rgba(0,0,0,.2);font-size:14px;line-height:1.4;display:flex;gap:10px;align-items:flex-start}
+  .tier li::before{content:"✓";font-family:'Archivo Black';color:var(--red);flex-shrink:0}
+  .tier.pop li::before{color:var(--ink)}
+  .tier .btn{margin-top:24px;width:100%;justify-content:center}
+
+  /* Testimonials */
+  .tcards{margin-top:52px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .tcard{background:var(--paper);border:var(--border-thick);padding:28px;box-shadow:var(--shadow-lg);position:relative}
+  .tcard:nth-child(2){background:var(--pink);transform:translateY(16px)}
+  .tcard:nth-child(3){background:var(--yellow);transform:translateY(-8px)}
+  .tcard:nth-child(4){background:var(--blue);color:var(--paper)}
+  .tcard .q{font-family:'Archivo Black';font-size:44px;line-height:0;letter-spacing:-0.04em;margin-bottom:18px;display:block}
+  .tcard blockquote{font-size:16px;line-height:1.5;margin-bottom:22px}
+  .tmeta{display:flex;align-items:center;gap:14px;padding-top:16px;border-top:2px solid currentColor}
+  .avatar{width:48px;height:48px;border:var(--border);background:var(--paper);display:grid;place-items:center;font-family:'Archivo Black';font-size:16px;color:var(--ink);flex-shrink:0}
+  .tmeta .name{font-weight:700;font-size:15px}
+  .tmeta .role{font-family:'JetBrains Mono',monospace;font-size:12px;opacity:.8}
+
+  /* FAQ */
+  .faqs{margin-top:48px;border:var(--border-thick);background:var(--paper)}
+  .faq{border-bottom:var(--border);padding:22px 26px;cursor:pointer}
+  .faq:last-child{border-bottom:none}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;font-family:'Archivo Black';font-size:20px;text-transform:uppercase;letter-spacing:-0.01em}
+  .faq-toggle{width:36px;height:36px;background:var(--yellow);border:var(--border);display:grid;place-items:center;font-family:'Archivo Black';font-size:20px;box-shadow:3px 3px 0 0 var(--ink);transition:transform .2s}
+  .faq.open .faq-toggle{background:var(--red);color:var(--paper);transform:rotate(45deg)}
+  .faq-a{margin-top:0;max-height:0;overflow:hidden;transition:max-height .3s,margin-top .3s;font-size:16px;line-height:1.5;color:#333}
+  .faq.open .faq-a{max-height:400px;margin-top:16px}
+
+  /* Big CTA */
+  .bigcta{background:var(--yellow);border-top:var(--border-thick);border-bottom:var(--border-thick)}
+  .bigcta-inner{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center;padding:80px 0}
+  .bigcta h2{font-family:'Archivo Black';font-size:clamp(40px,5vw,76px);line-height:0.95;letter-spacing:-0.035em;text-transform:uppercase}
+  .bigcta .aside{background:var(--ink);color:var(--paper);padding:26px;border:var(--border-thick);box-shadow:10px 10px 0 0 var(--red)}
+  .bigcta .aside .n{font-family:'Archivo Black';font-size:64px;color:var(--yellow);line-height:1;letter-spacing:-0.03em}
+  .bigcta .aside .t{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:#ddd}
+
+  /* Footer */
+  footer{background:var(--ink);color:var(--paper);padding:80px 0 40px;border-top:var(--border-thick)}
+  .foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:60px}
+  .foot-big{font-family:'Archivo Black';font-size:clamp(32px,3.6vw,48px);line-height:1;letter-spacing:-0.03em;text-transform:uppercase}
+  .foot-big .hl{background:var(--yellow);color:var(--ink);padding:2px 10px;display:inline-block;border:2px solid var(--paper);margin-top:6px}
+  .fcol h5{font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.12em;color:var(--yellow);margin-bottom:14px}
+  .fcol ul{list-style:none;padding:0}
+  .fcol li{padding:5px 0;font-size:14px;color:#ccc}
+  .fcol li:hover{color:var(--yellow)}
+  .foot-bot{padding-top:28px;border-top:2px solid #333;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:0.08em}
+
+  /* Back link */
+  .backlink{position:fixed;top:86px;left:20px;z-index:100;padding:8px 14px;background:var(--ink);color:var(--yellow);border:var(--border);font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;box-shadow:3px 3px 0 0 var(--yellow)}
+
+  @media (max-width:980px){
+    .hero-grid,.problem-grid,.icp-grid,.bigcta-inner{grid-template-columns:1fr}
+    .stats,.diff-grid,.nums-grid,.price-grid,.tcards,.steps,.cmp-row,.foot-top{grid-template-columns:1fr !important}
+    .cmp-row{display:block}
+    .cell{border-right:none;border-bottom:var(--border)}
+    .ptab{font-size:14px;padding:12px}
+    .pillar-body{grid-template-columns:1fr;padding:22px}
+    .nav-links{display:none}
+    .backlink{display:none}
+  }
+</style>
+</head>
+<body>
+
+<a class="backlink" href="index.html">← Versions</a>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>AI-POWERED GROWTH SYSTEMS</span>
+    <span>110+ PROJECTS DELIVERED</span>
+    <span>$65M REVENUE INFLUENCED</span>
+    <span>LIVE IN 2 WEEKS</span>
+    <span>11 CLIENTS PER QUARTER</span>
+    <span>SEO / PAID / CONTENT / CRO</span>
+    <span>AI-POWERED GROWTH SYSTEMS</span>
+    <span>110+ PROJECTS DELIVERED</span>
+    <span>$65M REVENUE INFLUENCED</span>
+    <span>LIVE IN 2 WEEKS</span>
+    <span>11 CLIENTS PER QUARTER</span>
+    <span>SEO / PAID / CONTENT / CRO</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <a href="#" class="logo"><span class="logo-mark">A</span>AIxGrowth<span class="mono" style="font-size:11px;opacity:.6;margin-left:4px">/GTM</span></a>
+  <div class="nav-links">
+    <a href="#problem">Problem</a>
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#blog">Blog</a>
+  </div>
+  <a href="#cta" class="btn btn-ink">Talk to Us →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag"><span class="dot"></span>ACCEPTING 11 NEW CLIENTS · Q2 2026</div>
+        <h1>We Build <span class="hl">AI-Powered</span> Marketing Systems <span class="hl-red">That Compound</span> Month Over Month.</h1>
+        <p class="hero-sub">Most agencies ship campaigns. We ship growth infrastructure — AI-powered systems across SEO, Content, Paid Media and Conversion that get smarter the longer they run.</p>
+        <div class="hero-ctas">
+          <a href="#cta" class="btn btn-yellow">Book a Free Strategy Call →</a>
+          <a href="#services" class="btn">See How It Works</a>
+        </div>
+        <div class="hero-note">// SENIOR STRATEGIST RESPONDS WITHIN 24 HOURS · NO COMMITMENT</div>
+
+        <div class="stats">
+          <div class="stat"><div class="num">110+</div><div class="lbl">Projects Delivered</div></div>
+          <div class="stat"><div class="num">$65M+</div><div class="lbl">Revenue Influenced</div></div>
+          <div class="stat"><div class="num">2 WKS</div><div class="lbl">Avg. Time to Launch</div></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="vcard">
+          <div class="vcard-head">
+            <h4>// GROWTH_ENGINE.LIVE</h4>
+            <div class="dots"><i></i><i></i><i></i></div>
+          </div>
+          <div class="bars">
+            <div class="bar b1"></div>
+            <div class="bar b2"></div>
+            <div class="bar b3"></div>
+            <div class="bar b4"></div>
+            <div class="bar b5"></div>
+          </div>
+          <div class="vcard-legend">
+            <span>WK 1</span><span>WK 4</span><span>WK 8</span><span>WK 12</span><span>WK 16</span>
+          </div>
+          <div class="vcard-foot">
+            <span>PIPELINE</span>
+            <span>↑ +428%</span>
+          </div>
+          <div class="float-badge">LIVE<br>IN 2<br>WEEKS</div>
+          <div class="float-tape">★ AI-NATIVE STUDIO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<section class="logos">
+  <div class="wrap">
+    <div class="logos-title">▼ TRUSTED BY FUNDED STARTUPS AND GROWTH-STAGE TEAMS ▼</div>
+    <div class="logos-row">
+      <span>CLEARTRIP</span><span>LETSVENTURE</span><span>OWNIFY</span><span>JETSEAM</span><span>UPGRAD</span><span>JUPITER</span><span>POLYGON</span><span>ACCEL</span><span>MATRIX</span><span>TARRAKKI</span><span>HOUSEWARE</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section problem" id="problem">
+  <div class="wrap">
+    <div class="eyebrow">// THE PROBLEM</div>
+    <h2 class="sec">The Old Marketing Playbook Is Costing You Growth.</h2>
+    <div class="problem-grid">
+      <div class="p-copy">
+        <p>Hiring a great senior marketer takes 3–6 months and costs $150K+/year — and they still can't cover strategy, SEO, paid media, content, analytics, and automation all at once. So you hire more people. Add management overhead. And still move too slowly to keep up.</p>
+        <p>Traditional agencies give you a polished proposal, a junior account manager, and a monthly report full of impressions. They measure activity. Not outcomes.</p>
+        <p>And if you plug in AI tools yourself? Without a system connecting them, you get inconsistent outputs — not compounding results.</p>
+      </div>
+      <div class="real-prob">
+        <h4>THE REAL PROBLEM</h4>
+        <p>Effective marketing in 2026 requires orchestration of AI with multiple tools, strategies and skills. Traditional agencies can't do that. We can.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENCE -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">// THE AIXGROWTH DIFFERENCE</div>
+    <h2 class="sec">A Full-Stack AI Marketing Team That Embeds In 2 Weeks & Shows First Results In 4 Weeks.</h2>
+    <p class="sec-sub">AIxGrowth is an AI-native marketing studio. We combine marketing strategy with AI engineering to build revenue systems traditional agencies simply can't — because they don't have the technical depth, and pure AI tools lack the strategic layer. We're not here to run your ads. We're here to build your growth engine.</p>
+
+    <div class="diff-grid">
+      <div class="diff">
+        <div class="icon">⚡</div>
+        <h3>AI-Accelerated Execution</h3>
+        <p>Every workflow — from content production to campaign optimization — runs on AI. More output, faster iteration, lower cost per result than any traditional team.</p>
+      </div>
+      <div class="diff">
+        <div class="icon">◉</div>
+        <h3>Dedicated Senior Strategist, Not Junior Handoffs</h3>
+        <p>You work directly with senior strategists and AI engineers, not account managers. We think in systems and outcomes, not tasks and deliverables.</p>
+      </div>
+      <div class="diff">
+        <div class="icon">⌘</div>
+        <h3>Embedded, Not Outsourced</h3>
+        <p>We plug into your stack (Slack, ad accounts, CRM) within 2 weeks. Weekly shipping cadence. Regular updates. Zero guesswork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS / SERVICES -->
+<section class="section pillars" id="services">
+  <div class="wrap">
+    <div class="eyebrow">// WHAT WE BUILD</div>
+    <h2 class="sec">Full-Stack AI Marketing Across Every Growth Lever.</h2>
+    <p class="sec-sub">We work across three interconnected pillars — Attract, Convert, Accelerate — so your marketing doesn't leak at any stage of the funnel.</p>
+
+    <div class="pillar-tabs">
+      <button class="ptab active" data-tab="attract"><span class="n">// 01</span>ATTRACT</button>
+      <button class="ptab" data-tab="convert"><span class="n">// 02</span>CONVERT</button>
+      <button class="ptab" data-tab="accelerate"><span class="n">// 03</span>ACCELERATE</button>
+    </div>
+
+    <div class="pillar-body active" data-tab="attract">
+      <div class="pillar-lead">
+        <h3>Attract</h3>
+        <p>Build the top of your funnel with AI-powered content and acquisition.</p>
+        <p>Get found. Get attention. Own the channels your buyers actually use.</p>
+        <span class="hl-line">7 SERVICE LINES</span>
+      </div>
+      <div class="services">
+        <div class="srv"><span>SEO & AI-Assisted Content Marketing</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Paid Media (Google, Meta, LinkedIn)</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Social Media Marketing for Brands</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Founder & Executive Thought Leadership</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Video Marketing & Production</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Podcast Strategy & Distribution</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Webinar & Virtual Event Marketing</span><span class="arr">↗</span></div>
+      </div>
+    </div>
+
+    <div class="pillar-body" data-tab="convert">
+      <div class="pillar-lead">
+        <h3>Convert</h3>
+        <p>Turn traffic and leads into pipeline with smart nurture systems.</p>
+        <p>Getting traffic is table stakes. We build systems that turn visitors → leads and leads → customers.</p>
+        <span class="hl-line">5 SERVICE LINES</span>
+      </div>
+      <div class="services">
+        <div class="srv"><span>Landing Page Strategy & Funnel Design</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Conversion Rate Optimization (CRO)</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Email Marketing & Automation</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Lead Nurturing & Lifecycle Campaigns</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Retargeting & Re-engagement Flows</span><span class="arr">↗</span></div>
+      </div>
+    </div>
+
+    <div class="pillar-body" data-tab="accelerate">
+      <div class="pillar-lead">
+        <h3>Accelerate</h3>
+        <p>The AI infrastructure layer that makes everything faster, smarter, and more scalable.</p>
+        <p><em>This is what separates us from every other agency. We don't just use AI tools — we deeply integrate AI into your marketing stack.</em></p>
+        <span class="hl-line">5 SERVICE LINES</span>
+      </div>
+      <div class="services">
+        <div class="srv"><span>Custom AI Marketing Agents & Automations</span><span class="arr">↗</span></div>
+        <div class="srv"><span>AI-Generated Content at Scale (Images, Video, Copy)</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Custom Marketing Analytics Dashboards</span><span class="arr">↗</span></div>
+        <div class="srv"><span>A/B Testing Automation</span><span class="arr">↗</span></div>
+        <div class="srv"><span>Full-Funnel Attribution & Journey Mapping</span><span class="arr">↗</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section process" id="process">
+  <div class="wrap">
+    <div class="eyebrow">// OUR PROCESS</div>
+    <h2 class="sec">Strategy Isn't A Phase — It's The System.</h2>
+    <p class="sec-sub">Here's how we go from first call to compounding growth — in weeks, not quarters.</p>
+
+    <div class="steps">
+      <div class="step"><div class="num">01</div><h4>Discovery & Strategy</h4><p>We go deep on your ICP, funnel, channels, and competitive landscape. We align on goals and lock in scope.</p></div>
+      <div class="step"><div class="num">02</div><h4>Embedded Setup</h4><p>We plug into your stack — CRM, ad accounts, CDP, analytics, Slack. No onboarding theater. We move fast.</p></div>
+      <div class="step"><div class="num">03</div><h4>Continuous Execution</h4><p>Weekly shipping cadence: new creatives, landing pages, campaigns, automations. Real progress every week.</p></div>
+      <div class="step"><div class="num">04</div><h4>AI-Powered Optimization</h4><p>We surface hidden data and act on it. What's working gets scaled. What isn't gets cut or tested. Fast.</p></div>
+      <div class="step"><div class="num">05</div><h4>Monthly Review & Sprint Plan</h4><p>Full performance review tied to pipeline and CAC. Plan next month's priorities together, then build.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARE -->
+<section class="section compare">
+  <div class="wrap">
+    <div class="eyebrow">// HOW WE COMPARE</div>
+    <h2 class="sec">You've Tried The Others. Here's How They Compare.</h2>
+    <p class="sec-sub">Most growth teams have burned budget on at least one of these. Here's what you're actually getting.</p>
+
+    <div class="cmp-table">
+      <div class="cmp-row cmp-head">
+        <div class="cell"></div>
+        <div class="cell us">AIxGrowth</div>
+        <div class="cell">Traditional Agencies</div>
+        <div class="cell">In-House Teams</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Time to Start</div>
+        <div class="cell us">Live in 2 weeks</div>
+        <div class="cell">2–4 weeks</div>
+        <div class="cell">3–6 months to hire</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Monthly Cost</div>
+        <div class="cell us">From $5K/mo</div>
+        <div class="cell">$8K–$25K+/mo, opaque</div>
+        <div class="cell">$150K–$250K/yr per hire</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Who Runs It</div>
+        <div class="cell us">Senior strategists + AI engineers</div>
+        <div class="cell">Junior account managers</div>
+        <div class="cell">Whoever you hired</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">AI Integration</div>
+        <div class="cell us">Native to every workflow</div>
+        <div class="cell">Bolt-on, rarely real</div>
+        <div class="cell">Ad hoc, if at all</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Accountability</div>
+        <div class="cell us">Outcome-focused KPIs</div>
+        <div class="cell">Hard to attribute</div>
+        <div class="cell">Internal management burden</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Scales With You</div>
+        <div class="cell us">Scales with AI</div>
+        <div class="cell">Requires more budget</div>
+        <div class="cell">Requires more headcount</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cell lbl">Systems Thinking</div>
+        <div class="cell us">Infrastructure built to compound</div>
+        <div class="cell">Campaigns, not systems</div>
+        <div class="cell">Depends on who you hire</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="section nums">
+  <div class="wrap">
+    <div class="eyebrow">// THE NUMBERS</div>
+    <h2 class="sec">Built To Drive Revenue, Not Just Campaigns.</h2>
+    <p class="sec-sub" style="color:#ffe">Most growth teams have burned budget on at least one of these. Here's what you're actually getting.</p>
+
+    <div class="nums-grid">
+      <div class="nbox"><div class="n">110+</div><div class="t">Projects delivered for startups & enterprise teams</div></div>
+      <div class="nbox"><div class="n">$65M+</div><div class="t">Revenue influenced across client portfolios</div></div>
+      <div class="nbox"><div class="n">2 WKS</div><div class="t">Avg. time from signed contract to live campaigns</div></div>
+      <div class="nbox"><div class="n">30–60</div><div class="t">Days to first measurable results</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ICP -->
+<section class="section icp">
+  <div class="wrap">
+    <div class="eyebrow">// WHO IT'S FOR</div>
+    <div class="icp-grid">
+      <div>
+        <h2 class="sec">If You're Scaling A Tech Company And Marketing Feels Like A Bottleneck — This Is For You.</h2>
+      </div>
+      <div>
+        <p>We go deep on your ICP, current funnel, channels, and competitive landscape. We align on goals, prioritize the highest-leverage opportunities, and lock in scope and timeline.</p>
+        <p><strong>Seed to Series B companies with $1M to $50M ARR.</strong></p>
+        <div class="chips">
+          <span class="chip">B2B SaaS</span>
+          <span class="chip">Edtech & Higher Education</span>
+          <span class="chip">E-commerce & D2C</span>
+          <span class="chip">HR Tech & Future of Work</span>
+          <span class="chip">Developer Tools & Infrastructure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing" id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">// PRICING</div>
+    <h2 class="sec">Transparent Pricing, No Games.</h2>
+    <p class="sec-sub" style="color:#ddd">Every engagement starts with a strategy session. Pick the tier that matches your growth stage — scale up or down anytime.</p>
+
+    <div class="price-grid">
+      <div class="tier">
+        <h4>TIER 01 — STARTER</h4>
+        <p class="sub">For early-stage teams testing AI marketing.</p>
+        <div class="price">$5,000<span>/month</span></div>
+        <ul>
+          <li>AI marketing audit + 90-day prioritized growth roadmap</li>
+          <li>1 paid acquisition channel (Google or Meta)</li>
+          <li>AI content engine (SEO blog + social)</li>
+          <li>Email automation setup</li>
+          <li>Monthly performance reporting</li>
+          <li>Direct Slack access to your strategist</li>
+        </ul>
+        <a href="#cta" class="btn btn-ink">Get Started →</a>
+      </div>
+
+      <div class="tier pop">
+        <div class="ribbon">★ MOST POPULAR</div>
+        <h4>TIER 02 — GROWTH</h4>
+        <p class="sub">For teams ready to scale acquisition across multiple channels.</p>
+        <div class="price">$13,500<span>/month</span></div>
+        <ul>
+          <li>Unified growth strategy across SEO, paid, content, email & conversion</li>
+          <li>Multi-channel paid acquisition (Google, Meta, LinkedIn)</li>
+          <li>Full AI content production (blog, social, video)</li>
+          <li>Tech stack buildout — CDP setup, CRM integration</li>
+          <li>Conversion optimization — landing pages, A/B testing, CRO</li>
+          <li>Bi-weekly strategy calls</li>
+        </ul>
+        <a href="#cta" class="btn btn-red">Get Started →</a>
+      </div>
+
+      <div class="tier">
+        <h4>TIER 03 — FULL STACK</h4>
+        <p class="sub">For companies ready to go all-in on AI growth.</p>
+        <div class="price">Custom<span>/scoped</span></div>
+        <ul>
+          <li>Everything in Growth, plus:</li>
+          <li>Dedicated AI marketing team</li>
+          <li>Custom AI agents & workflow development</li>
+          <li>Custom mini-apps & internal tool development</li>
+          <li>Full-funnel attribution & analytics infrastructure</li>
+          <li>Weekly sprint reviews & priority support</li>
+        </ul>
+        <a href="#cta" class="btn btn-yellow">Get Started →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">// TESTIMONIALS</div>
+    <h2 class="sec">Here's Why Growth Teams Choose Us.</h2>
+    <p class="sec-sub">We partner with founders and marketing leaders who care about pipeline, not vanity metrics.</p>
+
+    <div class="tcards">
+      <div class="tcard">
+        <span class="q">"</span>
+        <blockquote>Honestly, I never worked with a better partner before. There is always someone available to help, you always deliver on time with great quality. For the last 12 months we have been working on very complex products & the experience has been excellent.</blockquote>
+        <div class="tmeta"><div class="avatar">LS</div><div><div class="name">Leon Stern</div><div class="role">Director of Digital · Polygon</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="q">"</span>
+        <blockquote>We are not looking for an agency, we are looking for a team who would have as much skin in the game as us. EPYC delivered through and through without leaving a single stone unturned. novabenefits.com went on to organically be featured in respected website design curations.</blockquote>
+        <div class="tmeta"><div class="avatar">AP</div><div><div class="name">Asis Panda</div><div class="role">Director of Design · Nova Benefits</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="q">"</span>
+        <blockquote>Arguably one of the most professional & dedicated no-code design studios, going above & beyond, working with you to ensure excellent results. The team is creative, attentive to detail & very responsive to the needs of their clients.</blockquote>
+        <div class="tmeta"><div class="avatar">PG</div><div><div class="name">Paromita Gupta</div><div class="role">Director of Digital · Polygon</div></div></div>
+      </div>
+      <div class="tcard">
+        <span class="q">"</span>
+        <blockquote>Very empathetic to the challenges & needs of their clients. Quality before pricing as an approach is refreshing & their USP. We will continue working with them as long as possible.</blockquote>
+        <div class="tmeta"><div class="avatar" style="color:#000">JM</div><div><div class="name">Jay Magdani</div><div class="role">Entrepreneur in Residence · Scalix</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="wrap">
+    <div class="eyebrow">// FAQ</div>
+    <h2 class="sec">Your Questions, Answered.</h2>
+    <p class="sec-sub">Get clear answers about working with AIxGrowth.</p>
+
+    <div class="faqs">
+      <div class="faq open"><div class="faq-q"><span>Can't I just use AI tools myself?</span><span class="faq-toggle">+</span></div><div class="faq-a">You can — but without a system connecting strategy, tools, and channels, you'll get inconsistent outputs instead of compounding results. We build the orchestration layer between the tools.</div></div>
+      <div class="faq"><div class="faq-q"><span>How fast will I see results?</span><span class="faq-toggle">+</span></div><div class="faq-a">We go live in 2 weeks. First measurable results typically land in 30–60 days.</div></div>
+      <div class="faq"><div class="faq-q"><span>Do you replace my internal marketing team?</span><span class="faq-toggle">+</span></div><div class="faq-a">We embed alongside them. We're operators who plug into your stack and ship weekly — not consultants who hand off a deck.</div></div>
+      <div class="faq"><div class="faq-q"><span>What kinds of companies do you work with?</span><span class="faq-toggle">+</span></div><div class="faq-a">Seed to Series B companies with $1M–$50M ARR across B2B SaaS, Edtech, E-commerce, HR Tech, and Developer Tools.</div></div>
+      <div class="faq"><div class="faq-q"><span>What makes you different from other "AI marketing" agencies?</span><span class="faq-toggle">+</span></div><div class="faq-a">AI isn't a bolt-on for us. It's the foundation of every workflow — from keyword research to autonomous ad optimization to AI-generated content at scale.</div></div>
+      <div class="faq"><div class="faq-q"><span>How do we get started?</span><span class="faq-toggle">+</span></div><div class="faq-a">Book a free strategy call. A senior strategist responds within 24 hours — no commitment required.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG CTA -->
+<section class="bigcta" id="cta">
+  <div class="wrap">
+    <div class="bigcta-inner">
+      <div>
+        <div class="eyebrow" style="background:var(--ink);color:var(--yellow)">// LIMITED AVAILABILITY</div>
+        <h2>We Only Take On <span style="color:var(--red)">11</span> New Clients Per Quarter.</h2>
+        <p style="margin-top:20px;font-size:18px;max-width:560px">We keep a lean team so every client gets senior attention. If you're ready to build a real AI marketing engine, let's talk before the next cohort fills up.</p>
+        <div style="margin-top:28px;display:flex;gap:14px;flex-wrap:wrap">
+          <a href="#" class="btn btn-ink">Book Your Free Strategy Call →</a>
+          <a href="#" class="btn">See the Blog</a>
+        </div>
+        <div class="hero-note">// NO COMMITMENT REQUIRED · SENIOR STRATEGIST RESPONDS WITHIN 24 HOURS</div>
+      </div>
+      <div class="aside">
+        <div class="n">04/11</div>
+        <div class="t">Spots remaining this quarter</div>
+        <div style="margin-top:22px;padding-top:18px;border-top:2px solid #333">
+          <div class="mono" style="font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">NEXT COHORT</div>
+          <div style="font-family:'Archivo Black';font-size:24px;color:#fff">Q3 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="logo" style="color:#fff;font-size:24px"><span class="logo-mark">A</span>AIxGrowth</div>
+        <div class="foot-big" style="margin-top:22px">We're building the <span class="hl">AI growth engine</span> your competitors wish they had.</div>
+      </div>
+      <div class="fcol"><h5>// LINKS</h5><ul><li>Services</li><li>How It Works</li><li>Pricing</li><li>Blog</li><li>Contact</li></ul></div>
+      <div class="fcol"><h5>// LEGAL</h5><ul><li>Privacy Policy</li><li>Terms of Service</li><li>AIxG Terms</li></ul></div>
+      <div class="fcol"><h5>// SOCIAL</h5><ul><li>LinkedIn</li><li>Twitter / X</li><li>team@epyc.in</li><li>San Francisco, CA</li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <div>© 2026 AIXGROWTH · ALL RIGHTS RESERVED</div>
+      <div>★ BUILT FOR REVENUE ACCELERATION</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Pillar tabs
+  document.querySelectorAll('.ptab').forEach(t => {
+    t.addEventListener('click', () => {
+      const k = t.dataset.tab;
+      document.querySelectorAll('.ptab').forEach(x => x.classList.toggle('active', x.dataset.tab === k));
+      document.querySelectorAll('.pillar-body').forEach(x => x.classList.toggle('active', x.dataset.tab === k));
+    });
+  });
+  // FAQ
+  document.querySelectorAll('.faq').forEach(f => {
+    f.addEventListener('click', () => f.classList.toggle('open'));
+  });
+</script>
+</body>
+</html>
