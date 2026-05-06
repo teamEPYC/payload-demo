@@ -1,8 +1,9 @@
 import { Container, Reveal } from '@/components/ui'
-import { landing } from '@/content/landing'
+import { landing, type LandingContent } from '@/content/landing'
 
-export function LogosStrip() {
-  const { title, items } = landing.logos
+export function LogosStrip({ data = landing.logos }: { data?: LandingContent['logos'] }) {
+  const { title, items } = data
+
   return (
     <section className="border-ink-thick border-y bg-ink py-10 text-paper">
       <Container>

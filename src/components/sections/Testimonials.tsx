@@ -1,5 +1,5 @@
 import { Reveal, RevealStagger, Section, SectionHeading } from '@/components/ui'
-import { landing } from '@/content/landing'
+import { landing, type LandingContent } from '@/content/landing'
 
 const TONE = [
   { bg: 'bg-paper text-ink', lift: '' },
@@ -8,8 +8,12 @@ const TONE = [
   { bg: 'bg-blue text-paper', lift: '' },
 ]
 
-export function Testimonials() {
-  const { eyebrow, title, sub, items } = landing.testimonials
+export function Testimonials({
+  data = landing.testimonials,
+}: {
+  data?: LandingContent['testimonials']
+}) {
+  const { eyebrow, title, sub, items } = data
 
   return (
     <Section tone="default" reveal={false}>
@@ -19,32 +23,32 @@ export function Testimonials() {
 
       <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
         <RevealStagger step={100}>
-        {items.map((t, i) => {
-          const tone = TONE[i % TONE.length]!
-          return (
-            <div
-              key={t.name}
-              className={`border-ink-thick shadow-brut-lg relative p-7 ${tone.bg} ${tone.lift}`}
-            >
-              <span
-                className="block font-display text-5xl leading-none tracking-tight"
-                aria-hidden
+          {items.map((t, i) => {
+            const tone = TONE[i % TONE.length]!
+            return (
+              <div
+                key={`${t.name}-${i}`}
+                className={`border-ink-thick shadow-brut-lg relative p-7 ${tone.bg} ${tone.lift}`}
               >
-                &ldquo;
-              </span>
-              <blockquote className="mt-4 mb-5 text-base leading-[1.5]">{t.quote}</blockquote>
-              <div className="flex items-center gap-3.5 border-t-2 border-current pt-4">
-                <div className="border-ink grid h-12 w-12 flex-shrink-0 place-items-center bg-paper font-display text-base text-ink">
-                  {t.initials}
-                </div>
-                <div>
-                  <div className="text-[15px] font-bold">{t.name}</div>
-                  <div className="font-mono text-xs opacity-80">{t.role}</div>
+                <span
+                  className="block font-display text-5xl leading-none tracking-tight"
+                  aria-hidden
+                >
+                  &ldquo;
+                </span>
+                <blockquote className="mt-4 mb-5 text-base leading-[1.5]">{t.quote}</blockquote>
+                <div className="flex items-center gap-3.5 border-t-2 border-current pt-4">
+                  <div className="border-ink grid h-12 w-12 flex-shrink-0 place-items-center bg-paper font-display text-base text-ink">
+                    {t.initials}
+                  </div>
+                  <div>
+                    <div className="text-[15px] font-bold">{t.name}</div>
+                    <div className="font-mono text-xs opacity-80">{t.role}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
         </RevealStagger>
       </div>
     </Section>

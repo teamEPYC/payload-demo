@@ -1,9 +1,9 @@
 import { Button, Container } from '@/components/ui'
-import { landing } from '@/content/landing'
+import { landing, type LandingContent } from '@/content/landing'
 import { HeroVisualCard } from './HeroVisualCard'
 
-export function Hero() {
-  const { tag, headline, sub, primaryCta, secondaryCta, note, stats } = landing.hero
+export function Hero({ data = landing.hero }: { data?: LandingContent['hero'] }) {
+  const { tag, headline, sub, primaryCta, secondaryCta, note, stats } = data
 
   return (
     <section className="relative overflow-hidden py-16 md:py-20">
@@ -42,33 +42,38 @@ export function Hero() {
             </div>
 
             {/* Note */}
-            <div className="mt-4 font-mono text-xs uppercase tracking-[0.05em] text-ink/60">
-              {note}
-            </div>
+            {note && (
+              <div className="mt-4 font-mono text-xs uppercase tracking-[0.05em] text-ink/60">
+                {note}
+              </div>
+            )}
 
             {/* Stats */}
-            <div className="mt-11 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {stats.map((stat, i) => {
-                const bg =
-                  i === 0 ? 'bg-yellow' : i === 1 ? 'bg-paper -translate-y-2' : 'bg-blue text-paper'
-                return (
-                  <div
-                    key={stat.label}
-                    className={`border-ink shadow-brut p-5 ${bg}`}
-                  >
-                    <div className="font-display text-4xl leading-none tracking-tight">
-                      {stat.num}
+            {stats.length > 0 && (
+              <div className="mt-11 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                {stats.map((stat, i) => {
+                  const bg =
+                    i === 0
+                      ? 'bg-yellow'
+                      : i === 1
+                        ? 'bg-paper -translate-y-2'
+                        : 'bg-blue text-paper'
+                  return (
+                    <div key={`${stat.label}-${i}`} className={`border-ink shadow-brut p-5 ${bg}`}>
+                      <div className="font-display text-4xl leading-none tracking-tight">
+                        {stat.num}
+                      </div>
+                      <div className="mt-2 font-mono text-[11px] font-semibold uppercase tracking-[0.08em]">
+                        {stat.label}
+                      </div>
                     </div>
-                    <div className="mt-2 font-mono text-[11px] font-semibold uppercase tracking-[0.08em]">
-                      {stat.label}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
 
-          {/* Right column */}
+          {/* Right column — visual stays from static, too design-y to CMS-ify */}
           <HeroVisualCard />
         </div>
       </Container>

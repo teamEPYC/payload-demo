@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { Section, SectionHeading } from '@/components/ui'
-import { landing } from '@/content/landing'
+import { landing, type LandingContent } from '@/content/landing'
 
-export function FAQ() {
-  const { eyebrow, title, sub, items } = landing.faq
+export function FAQ({ data = landing.faq }: { data?: LandingContent['faq'] }) {
+  const { eyebrow, title, sub, items } = data
   const [open, setOpen] = useState<number | null>(0)
 
   return (
@@ -18,7 +18,7 @@ export function FAQ() {
           const isLast = i === items.length - 1
           return (
             <div
-              key={f.q}
+              key={`${f.q}-${i}`}
               className={`cursor-pointer px-7 py-5 ${
                 isLast ? '' : 'border-b-[3px] border-ink'
               }`}

@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    authors: Author;
+    categories: Category;
+    posts: Post;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,17 +81,24 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'landing-page': LandingPage;
+  };
+  globalsSelect: {
+    'landing-page': LandingPageSelect<false> | LandingPageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -122,7 +132,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,7 +157,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +173,92 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from "name". Edit only if you need a custom URL.
+   */
+  slug: string;
+  avatar?: (number | null) | Media;
+  /**
+   * Short bio shown on post pages and the author profile.
+   */
+  bio?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from "name". Edit only if you need a custom URL.
+   */
+  slug: string;
+  /**
+   * Optional. Shown on the category landing page.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * Auto-generated from "title". Edit only if you need a custom URL.
+   */
+  slug: string;
+  /**
+   * Short summary shown on listing cards and used as the meta description.
+   */
+  excerpt: string;
+  coverImage: number | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  author: number | Author;
+  categories?: (number | Category)[] | null;
+  /**
+   * Defaults to publish time if left empty.
+   */
+  publishedAt?: string | null;
+  /**
+   * Pin one post as the hero on the blog index.
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +275,32 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +310,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +333,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -277,6 +381,47 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  avatar?: T;
+  bio?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  coverImage?: T;
+  content?: T;
+  author?: T;
+  categories?: T;
+  publishedAt?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +459,278 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landing-page".
+ */
+export interface LandingPage {
+  id: number;
+  hero: {
+    tag: string;
+    /**
+     * The headline is split into 5 segments. Two of them (hl, hlRed) are highlighted with colored backgrounds.
+     */
+    headline: {
+      lead: string;
+      hl: string;
+      mid: string;
+      hlRed: string;
+      tail: string;
+    };
+    sub: string;
+    primaryCta: {
+      label: string;
+      href: string;
+    };
+    secondaryCta: {
+      label: string;
+      href: string;
+    };
+    note?: string | null;
+    /**
+     * Up to 3 stat boxes shown below the hero CTAs.
+     */
+    stats?:
+      | {
+          num: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  logos: {
+    title: string;
+    /**
+     * Logo wordmarks shown in the trust strip.
+     */
+    items?:
+      | {
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  pricing: {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    tiers?:
+      | {
+          tag: string;
+          name: string;
+          sub: string;
+          price: string;
+          priceSuffix: string;
+          features?:
+            | {
+                item: string;
+                id?: string | null;
+              }[]
+            | null;
+          ctaLabel: string;
+          ctaVariant: 'ink' | 'red' | 'yellow';
+          /**
+           * Pin this tier as the highlighted one.
+           */
+          popular?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    items?:
+      | {
+          initials: string;
+          name: string;
+          role: string;
+          quote: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    sub: string;
+    items?:
+      | {
+          q: string;
+          a: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  bigCta: {
+    eyebrow: string;
+    title: {
+      lead: string;
+      highlight: string;
+      tail: string;
+    };
+    sub: string;
+    primaryCta: {
+      label: string;
+      href: string;
+    };
+    secondaryCta: {
+      label: string;
+      href: string;
+    };
+    note?: string | null;
+    aside: {
+      spotsRemaining: string;
+      cohort: string;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landing-page_select".
+ */
+export interface LandingPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        tag?: T;
+        headline?:
+          | T
+          | {
+              lead?: T;
+              hl?: T;
+              mid?: T;
+              hlRed?: T;
+              tail?: T;
+            };
+        sub?: T;
+        primaryCta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondaryCta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        note?: T;
+        stats?:
+          | T
+          | {
+              num?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  logos?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              id?: T;
+            };
+      };
+  pricing?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        sub?: T;
+        tiers?:
+          | T
+          | {
+              tag?: T;
+              name?: T;
+              sub?: T;
+              price?: T;
+              priceSuffix?: T;
+              features?:
+                | T
+                | {
+                    item?: T;
+                    id?: T;
+                  };
+              ctaLabel?: T;
+              ctaVariant?: T;
+              popular?: T;
+              id?: T;
+            };
+      };
+  testimonials?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        sub?: T;
+        items?:
+          | T
+          | {
+              initials?: T;
+              name?: T;
+              role?: T;
+              quote?: T;
+              id?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        sub?: T;
+        items?:
+          | T
+          | {
+              q?: T;
+              a?: T;
+              id?: T;
+            };
+      };
+  bigCta?:
+    | T
+    | {
+        eyebrow?: T;
+        title?:
+          | T
+          | {
+              lead?: T;
+              highlight?: T;
+              tail?: T;
+            };
+        sub?: T;
+        primaryCta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondaryCta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        note?: T;
+        aside?:
+          | T
+          | {
+              spotsRemaining?: T;
+              cohort?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

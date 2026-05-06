@@ -16,15 +16,20 @@ import {
   Testimonials,
   Ticker,
 } from '@/components/sections'
+import { getLanding } from '@/lib/getLanding'
 
-export default function HomePage() {
+export const dynamic = 'force-dynamic'
+
+export default async function HomePage() {
+  const data = await getLanding()
+
   return (
     <>
       <Ticker />
       <Nav />
       <main>
-        <Hero />
-        <LogosStrip />
+        <Hero data={data.hero} />
+        <LogosStrip data={data.logos} />
         <ProblemSection />
         <DifferenceCards />
         <Pillars />
@@ -32,10 +37,10 @@ export default function HomePage() {
         <CompareTable />
         <NumbersSection />
         <ICPSection />
-        <Pricing />
-        <Testimonials />
-        <FAQ />
-        <BigCTA />
+        <Pricing data={data.pricing} />
+        <Testimonials data={data.testimonials} />
+        <FAQ data={data.faq} />
+        <BigCTA data={data.bigCta} />
       </main>
       <Footer />
     </>
