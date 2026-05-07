@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { AuthorByline, PostCard, RichText } from '@/components/blog'
+import { AuthorByline, PostCard, RefreshOnSave, RichText } from '@/components/blog'
 import { Container, Eyebrow, Reveal, RevealStagger } from '@/components/ui'
 import { Footer, Nav, Ticker } from '@/components/sections'
 import { asDoc, asDocs, formatDate } from '@/lib/payload-helpers'
@@ -14,14 +15,15 @@ export const dynamic = 'force-dynamic'
 
 type PageProps = { params: Promise<{ slug: string }> }
 
-async function getPost(slug: string): Promise<Post | null> {
+async function getPost(slug: string, isDraft: boolean): Promise<Post | null> {
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
     collection: 'posts',
     where: {
       slug: { equals: slug },
-      _status: { equals: 'published' },
+      ...(isDraft ? {} : { _status: { equals: 'published' } }),
     },
+    draft: isDraft,
     limit: 1,
     depth: 2,
   })
@@ -30,7 +32,8 @@ async function getPost(slug: string): Promise<Post | null> {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await getPost(slug)
+  const { isEnabled: isDraft } = await draftMode()
+  const post = await getPost(slug, isDraft)
   if (!post) return { title: 'Post not found' }
   const cover = asDoc<Media>(post.coverImage)
   return {
@@ -47,7 +50,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params
-  const post = await getPost(slug)
+  const { isEnabled: isDraft } = await draftMode()
+  const post = await getPost(slug, isDraft)
   if (!post) notFound()
 
   const cover = asDoc<Media>(post.coverImage)
@@ -78,6 +82,23 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <>
+      {isDraft && (
+        <RefreshOnSave
+          serverURL={
+            process.env.NEXT_PUBLIC_SERVER_URL ||
+            process.env.PAYLOAD_PUBLIC_SERVER_URL ||
+            'http://localhost:3000'
+          }
+        />
+      )}
+      {isDraft && (
+        <div className="border-ink-thick border-b bg-yellow px-4 py-2 text-center font-mono text-xs uppercase tracking-[0.08em]">
+          Preview mode —{' '}
+          <a href="/api/exit-preview" className="underline">
+            exit
+          </a>
+        </div>
+      )}
       <Ticker />
       <Nav />
       <main>

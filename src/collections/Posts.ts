@@ -6,6 +6,22 @@ export const Posts: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'publishedAt', '_status'],
+    livePreview: {
+      url: ({ data, req }) => {
+        const baseURL =
+          req.payload.config.serverURL ||
+          process.env.NEXT_PUBLIC_SERVER_URL ||
+          'http://localhost:3000'
+        const slug = data?.slug || ''
+        const path = `/blog/${slug}`
+        return `${baseURL}/api/preview?collection=posts&slug=${encodeURIComponent(slug)}&path=${encodeURIComponent(path)}`
+      },
+      breakpoints: [
+        { label: 'Mobile', name: 'mobile', width: 375, height: 667 },
+        { label: 'Tablet', name: 'tablet', width: 768, height: 1024 },
+        { label: 'Desktop', name: 'desktop', width: 1440, height: 900 },
+      ],
+    },
   },
   access: {
     // Public can only read published posts; admin sees everything via authenticated requests
