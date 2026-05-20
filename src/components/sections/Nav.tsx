@@ -25,7 +25,7 @@ export function Nav() {
       <div className="flex items-center justify-between px-7 py-5">
         <Logo />
 
-        <div className="hidden items-center gap-7 text-[15px] font-medium md:flex">
+        <div className="hidden items-center gap-7 text-[15px] font-medium nav:flex">
           {links.map((l) => (
             <a
               key={l.href}
@@ -44,7 +44,7 @@ export function Nav() {
           ))}
         </div>
 
-        <div className="hidden md:block">
+        <div className="hidden nav:block">
           <Button href={ctaHref} variant="ink">
             {ctaLabel}
           </Button>
@@ -56,7 +56,7 @@ export function Nav() {
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="border-ink shadow-brut-sm bg-yellow grid h-11 w-11 place-items-center md:hidden cursor-pointer"
+          className="border-ink shadow-brut-sm bg-yellow grid h-11 w-11 place-items-center nav:hidden cursor-pointer"
         >
           <span className="relative block h-[2px] w-5 bg-ink">
             <span
@@ -75,7 +75,7 @@ export function Nav() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="border-ink-thick border-t bg-bg md:hidden">
+        <div className="border-ink-thick border-t bg-bg nav:hidden">
           <div className="flex flex-col gap-1 p-5">
             {links.map((l) => (
               <a

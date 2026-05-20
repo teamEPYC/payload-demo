@@ -56,7 +56,7 @@ export function Pricing({ data = landing.pricing }: { data?: LandingContent['pri
                     return (
                       <li
                         key={f}
-                        className={`flex items-start gap-2.5 py-3 text-sm leading-[1.4] ${
+                        className={`flex items-start gap-2.5 px-4 py-3 text-sm leading-[1.4] ${
                           isLast ? '' : 'border-b border-dashed border-ink/30'
                         }`}
                       >

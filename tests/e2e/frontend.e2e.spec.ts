@@ -17,4 +17,17 @@ test.describe('Frontend', () => {
 
     await expect(heading).toHaveText('Welcome to your new project.')
   })
+
+  test('homepage has no horizontal overflow at mobile width', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 })
+    await page.goto('http://localhost:3000')
+
+    const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      clientWidth: document.documentElement.clientWidth,
+    }))
+
+    // Page must not be wider than the viewport (no sideways scroll).
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth)
+  })
 })

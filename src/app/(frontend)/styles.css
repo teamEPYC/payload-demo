@@ -24,6 +24,9 @@
 
   /* Layout */
   --container-wrap: 1360px;
+
+  /* Breakpoints — `nav:` variant drives the navbar desktop/mobile switch */
+  --breakpoint-nav: 850px;
 }
 
 /* Base resets — match the source's reset behavior */

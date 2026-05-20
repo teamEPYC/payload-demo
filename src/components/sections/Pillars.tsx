@@ -13,8 +13,8 @@ export function Pillars() {
     <Section tone="paper" id="services">
       <SectionHeading eyebrow={eyebrow} title={title} sub={sub} />
 
-      {/* Tabs */}
-      <div className="border-ink-thick mt-10 flex bg-bg">
+      {/* Tabs — stacked on mobile, single row from md up */}
+      <div className="border-ink-thick mt-10 flex flex-col bg-bg md:flex-row">
         {items.map((p, i) => {
           const isActive = p.key === active
           return (
@@ -23,7 +23,9 @@ export function Pillars() {
               type="button"
               onClick={() => setActive(p.key)}
               className={`flex-1 cursor-pointer px-5 py-4 text-left font-display uppercase tracking-tight transition-colors ${
-                i < items.length - 1 ? 'border-r-[3px] border-ink' : ''
+                i < items.length - 1
+                  ? 'border-b-[3px] border-ink md:border-b-0 md:border-r-[3px]'
+                  : ''
               } ${isActive ? 'bg-ink text-yellow' : 'bg-bg text-ink'}`}
             >
               <span className="mb-1 block font-mono text-xs opacity-70">{p.number}</span>

@@ -4,12 +4,13 @@ import { landing } from '@/content/landing'
 export function CompareTable() {
   const { eyebrow, title, sub, columns, rows } = landing.compare
 
-  // Column set including the leading label column
+  // Column set including the leading label column.
+  // `tag` is the column name shown inline on mobile (where the header row is hidden).
   const cells = (row: { label: string; us: string; agencies: string; inhouse: string }) => [
-    { content: row.label, kind: 'label' as const },
-    { content: row.us, kind: 'us' as const },
-    { content: row.agencies, kind: 'plain' as const },
-    { content: row.inhouse, kind: 'plain' as const },
+    { content: row.label, kind: 'label' as const, tag: undefined },
+    { content: row.us, kind: 'us' as const, tag: columns.us },
+    { content: row.agencies, kind: 'plain' as const, tag: columns.agencies },
+    { content: row.inhouse, kind: 'plain' as const, tag: columns.inhouse },
   ]
 
   return (
@@ -17,8 +18,8 @@ export function CompareTable() {
       <SectionHeading eyebrow={eyebrow} title={title} sub={sub} />
 
       <div className="border-ink-thick mt-12 overflow-hidden bg-paper">
-        {/* Header row */}
-        <div className="border-ink grid grid-cols-1 border-b-[3px] bg-ink text-paper md:grid-cols-[1.2fr_1fr_1fr_1fr]">
+        {/* Header row — hidden on mobile, where each value carries its own column tag */}
+        <div className="border-ink hidden border-b-[3px] bg-ink text-paper md:grid md:grid-cols-[1.2fr_1fr_1fr_1fr]">
           <div className="border-ink hidden md:block md:border-r-[3px] p-5" />
           <div className="border-ink bg-yellow p-5 font-display uppercase tracking-tight text-ink md:border-r-[3px]">
             {columns.us}
@@ -50,6 +51,15 @@ export function CompareTable() {
                 else if (c.kind === 'us') cls = `bg-[#FFFBDB] font-semibold`
                 return (
                   <div key={ci} className={`${base} ${cls} ${border} ${mobileBorder}`}>
+                    {c.tag && (
+                      <span
+                        className={`mb-1.5 block w-fit border border-ink px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.1em] md:hidden ${
+                          c.kind === 'us' ? 'bg-yellow text-ink' : 'bg-bg text-ink/70'
+                        }`}
+                      >
+                        {c.tag}
+                      </span>
+                    )}
                     {c.content}
                   </div>
                 )
